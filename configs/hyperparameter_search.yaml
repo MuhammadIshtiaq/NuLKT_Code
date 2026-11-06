@@ -1,0 +1,20 @@
+method: optuna
+selection_metric: validation_auprc
+direction: maximize
+max_trials: 40
+search_space:
+  hidden_dim: [64, 128, 256]
+  embedding_dim: [32, 64, 128]
+  transformer_depth: [1, 2, 3, 4]
+  num_heads: [2, 4, 8]
+  dropout: [0.1, 0.2, 0.3, 0.4]
+  sequence_length: [50, 100, 200, 400]
+  learning_rate:
+    type: loguniform
+    choices: [0.00001, 0.00003, 0.0001, 0.0003, 0.001]
+  weight_decay: [0.0, 0.00001, 0.0001, 0.001, 0.01]
+  batch_size: [32, 64, 128, 256]
+  contrastive_weight: [0.0, 0.01, 0.05, 0.1, 0.2]
+  num_experts: [3, 5, 7]
+  uncertainty_threshold: [0.20, 0.30, 0.40, 0.50]
+test_labels_for_selection: false

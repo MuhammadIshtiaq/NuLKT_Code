@@ -1,0 +1,72 @@
+# Validation-only candidate selected by architecture, optimization, and rigor review.
+# The test partition is intentionally unavailable during this stage.
+output:
+  root: New Results
+
+data:
+  protocol: chronological_split
+  feature_regime: pre_response
+  sequence_length: 200
+  batch_size: 64
+  context_length: 96
+  include_test: false
+
+model:
+  exercise_context: false
+  exercise_scalar_features: 4
+  irt_residual: false
+  completed_exercise_state: false
+  ablations: {}
+
+training:
+  optimizer: adamw
+  learning_rate: 0.0003
+  betas: [0.9, 0.98]
+  eps: 1.0e-8
+  weight_decay: 0.01
+  no_decay_on_bias_and_norm: true
+  lr_schedule: cosine_warmup
+  warmup_ratio: 0.08
+  min_lr_ratio: 0.05
+  ema: true
+  ema_decay: 0.9995
+  ema_warmup_steps: 1000
+  epochs: 40
+  patience: 10
+  monitor: auprc
+  monitor_mode: max
+  loss: bce
+  positive_weight: null
+
+screen:
+  seeds: [42, 123]
+  promotion_auroc_delta: 0.002
+  promotion_auprc_delta: 0.005
+  max_brier_delta: 0.002
+  max_ece_delta: 0.010
+  # Run these in order; each stage differs from the prior stage by one factor.
+  variants:
+    safe_baseline:
+      data: {context_length: 0}
+      model: {exercise_context: false, irt_residual: false, completed_exercise_state: false}
+      training: {lr_schedule: none, ema: false, weight_decay: 0.0001, betas: [0.9, 0.999]}
+    safe_context:
+      data: {context_length: 0}
+      model: {exercise_context: true, irt_residual: false, completed_exercise_state: false}
+      training: {lr_schedule: none, ema: false, weight_decay: 0.0001, betas: [0.9, 0.999]}
+    carry_context:
+      data: {context_length: 96}
+      model: {exercise_context: true, irt_residual: false, completed_exercise_state: false}
+      training: {lr_schedule: none, ema: false, weight_decay: 0.0001, betas: [0.9, 0.999]}
+    irt_residual:
+      data: {context_length: 96}
+      model: {exercise_context: true, irt_residual: true, completed_exercise_state: false}
+      training: {lr_schedule: none, ema: false, weight_decay: 0.0001, betas: [0.9, 0.999]}
+    completed_exercise_state:
+      data: {context_length: 96}
+      model: {exercise_context: true, irt_residual: true, completed_exercise_state: true}
+      training: {lr_schedule: none, ema: false, weight_decay: 0.0001, betas: [0.9, 0.999]}
+    advanced_training:
+      data: {context_length: 96, batch_size: 64}
+      model: {exercise_context: true, irt_residual: true, completed_exercise_state: true}
+      training: {lr_schedule: cosine_warmup, ema: true, weight_decay: 0.01, betas: [0.9, 0.98]}

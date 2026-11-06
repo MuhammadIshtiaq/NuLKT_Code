@@ -1,0 +1,41 @@
+project:
+  root: '.'
+  mode: quick
+  dataset_doi: 10.7910/DVN/8SWHNO
+  warning: 'DEBUG/QUICK MODE — NOT FOR PUBLICATION'
+
+data:
+  english_tracks: auto
+  max_rows: 5000
+  sequence_length: 50
+  session_gap_minutes: 30
+  minimum_learner_interactions: 3
+  deterministic_subset_seed: 42
+
+model:
+  name: nulkt
+  hidden_dim: 64
+  embedding_dim: 32
+  transformer_depth: 1
+  attention_heads: 2
+  dropout: 0.1
+  num_experts: 5
+  contrastive_coefficient: 0.01
+
+training:
+  seeds: [42]
+  batch_size: 32
+  epochs: 1
+  learning_rate: 0.001
+  early_stopping_patience: 1
+  mixed_precision: false
+  deterministic: true
+
+evaluation:
+  primary_metrics: [auroc, auprc]
+  bootstrap_repetitions: 100
+  threshold_source: validation
+
+publication:
+  dpi: 200
+  watermark: 'DEBUG/QUICK MODE — NOT FOR PUBLICATION'

@@ -1,0 +1,37 @@
+model:
+  name: nulkt
+  hidden_dim: 128
+  embedding_dim: 64
+  num_heads: 4
+  local_layers: 2
+  global_layers: 2
+  num_experts: 5
+  dropout: 0.2
+  max_sequence_length: 200
+  time_embedding_dim: 16
+  learner_embedding_dim: 32
+  learner_history_features: 6
+  contrastive_temperature: 0.1
+  contrastive_max_samples: 2048
+  uncertainty_threshold: 0.45
+  ablations: {}
+training:
+  epochs: 30
+  patience: 5
+  batch_size: 64
+  optimizer: adamw
+  learning_rate: 0.0003
+  weight_decay: 0.0001
+  gradient_clip_norm: 1.0
+  mixed_precision: true
+  loss: bce
+  prediction_weight: 1.0
+  contrastive_weight: 0.1
+  mastery_weight: 0.1
+  evidential_weight: 0.1
+  calibration_weight: 0.01
+  routing_entropy_weight: 0.001
+uncertainty:
+  method: beta_evidential
+  calibration: temperature_scaling
+  abstention_threshold: 0.45

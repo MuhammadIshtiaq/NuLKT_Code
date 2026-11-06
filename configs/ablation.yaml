@@ -1,0 +1,34 @@
+ablations:
+  A0_full:
+    model_ablation: {}
+  A1_without_learner_identity_embedding:
+    model_ablation: {personalization: true}
+  A2_without_linguistic_encoder:
+    model_ablation: {linguistic: true}
+  A3_without_elapsed_time_embedding:
+    model_ablation: {temporal: true}
+  A4_without_hierarchical_session_modeling:
+    model_ablation: {hierarchical: true}
+  A5_without_mixture_of_experts:
+    model_ablation: {moe: true}
+  A6_without_contrastive_learning:
+    model_ablation: {contrastive: true}
+    training_override: {contrastive_weight: 0.0}
+  A7_without_evidential_and_calibration_losses:
+    training_override: {evidential_weight: 0.0, calibration_weight: 0.0}
+  A8_transformer_replaced_by_lstm:
+    model_override: lstm
+  A9_without_dependency_context_feature:
+    model_ablation: {context: true}
+  A10_without_mixed_precision_and_gradient_clipping:
+    training_override: {mixed_precision: false, gradient_clip_norm: 1000000.0}
+  A11_minimal_without_linguistic_elapsed_embedding_hierarchy_moe_contrastive:
+    model_ablation: {linguistic: true, temporal: true, hierarchical: true, moe: true, contrastive: true}
+  A12_fixed_instead_of_trainable_temporal_kernel:
+    model_ablation: {trainable_temporal_decay: true}
+temporal_variants:
+  - no_temporal
+  - elapsed_only
+  - fixed_exponential
+  - learnable_exponential
+  - time_aware_attention

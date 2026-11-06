@@ -1,0 +1,18 @@
+optimizers:
+  adam:
+    learning_rate: [0.001, 0.0003]
+  adamw:
+    learning_rate: [0.001, 0.0003]
+    weight_decay: [0.0001, 0.001]
+  sgd_momentum:
+    learning_rate: [0.01, 0.001]
+    momentum: 0.9
+  rmsprop:
+    learning_rate: [0.001, 0.0003]
+schedulers:
+  - cosine
+  - plateau
+  - one_cycle
+selection_metric: validation_auprc
+test_labels_for_selection: false
+

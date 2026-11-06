@@ -1,0 +1,60 @@
+project:
+  root: '.'
+  mode: full
+  dataset_doi: 10.7910/DVN/8SWHNO
+  preprocessing_version: '1.0'
+
+data:
+  english_tracks: auto
+  chunk_size: 250000
+  session_gap_minutes: 30
+  sequence_length: 200
+  minimum_learner_interactions: 10
+  rare_category_min_count: 10
+  official_split_when_available: true
+  chronological_split: [0.70, 0.15, 0.15]
+  cold_start_split: [0.70, 0.15, 0.15]
+
+model:
+  name: nulkt
+  hidden_dim: 128
+  embedding_dim: 64
+  transformer_depth: 2
+  attention_heads: 4
+  dropout: 0.2
+  num_experts: 5
+  temporal_mode: learnable_attention
+  contrastive_coefficient: 0.05
+  auxiliary_coefficient: 0.1
+  calibration_coefficient: 0.0
+
+training:
+  seeds: [42, 123, 2024, 2025, 2026]
+  batch_size: 128
+  epochs: 30
+  learning_rate: 0.0003
+  weight_decay: 0.0001
+  optimizer: adamw
+  scheduler: warmup_cosine
+  warmup_fraction: 0.05
+  early_stopping_patience: 5
+  gradient_clip_norm: 1.0
+  gradient_accumulation_steps: 1
+  mixed_precision: auto
+  deterministic: true
+  test_evaluation_policy: once_after_selection
+
+evaluation:
+  primary_metrics: [auroc, auprc]
+  threshold_source: validation
+  bootstrap_repetitions: 2000
+  significance_alpha: 0.05
+  multiple_comparisons: holm
+  uncertainty_method: temperature_scaling_mc_dropout
+  abstention_threshold: 0.25
+
+publication:
+  dpi: 800
+  font_family: Times New Roman
+  figure_formats: [png, pdf, svg]
+  mark_nonpublication_runs: true

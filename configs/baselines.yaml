@@ -1,0 +1,32 @@
+classical:
+  - majority
+  - logistic_regression
+  - random_forest
+optional_classical:
+  - xgboost
+  - lightgbm
+  - catboost
+neural:
+  - mlp
+  - lstm
+  - gru
+  - deepfm
+knowledge_tracing:
+  - dkt
+  - dkvmn
+  - sakt
+  - akt
+  - saint_plus
+descriptive_baselines:
+  - hierarchical_transformer
+shared:
+  embedding_dim: 64
+  hidden_dim: 128
+  dropout: 0.2
+  epochs: 30
+  patience: 5
+  seeds: [42, 123, 2024, 2025, 2026]
+fairness:
+  compute_matched: true
+  parameter_match_tolerance: 0.15
+  test_labels_for_selection: false
